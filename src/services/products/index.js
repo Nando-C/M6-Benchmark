@@ -88,4 +88,75 @@ router.route('/:productId')
         }
     })
 
+
+// *****************************************************************************
+//                                 REVIEWS
+// *****************************************************************************
+
+
+router.route('/:productId/reviews')
+    // ===============  RETRIEVES LIST OF REVIEWS FROM A PRODUCT =======================
+    .get( async (req, res, next) => {
+        try {
+            const data = await Review.findAll({
+                where: { productId: req.params.productId},
+            })
+            res.send(data)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    })
+    // ===============  CREATES NEW REVIEW ON A PRODUCT =======================
+    .post( async (req, res, next) => {
+        try {
+            const data = await Review.create({...req.body, productId: req.params.productId })
+            res.send(data)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    })
+
+router.route('/:productId/reviews/:reviewId')
+   // ===============  RETRIEVES SINGLE REVIEW =======================
+    .get( async (req, res, next) => {
+        try {
+            const { productId, reviewId } = req.params
+            const data = await Review.findByPk(reviewId)
+            res.send(data)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    })
+    // ===============  UPDATES A REVIEW =======================
+    .put( async (req, res, next) => {
+        try {
+            const data = await Review.update(req.body, {
+                where: { id: req.params.reviewId},
+                returning: true,
+            })
+
+            res.send(data[1][0])
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    })
+    // ===============  DELETES A REVIEW =======================
+    .delete( async (req, res, next) => {
+        try {
+            const rowsCount = await Review.destroy({ where: { id: req.params.reviewId} })
+
+            if(rowsCount === 0) {
+                res.status(404).send(`Review with id: ${req.params.reviewId} Not Found!`)
+            } else {
+                res.send(`Review with id: ${req.params.reviewId}, successfully deleted!`)
+            }
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    })
     export default router
