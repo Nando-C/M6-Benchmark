@@ -103,20 +103,6 @@ router.route('/:productId/uploadImage')
             }
         )
         res.send(data[1][0])
-
-        // const productId = req.params.productId
-        // // const product = await ProductModel.findById(productId)
-
-        // const modifiedProduct = await ProductModel.findByIdAndUpdate(
-        //     productId, 
-        //     {imageUrl: req.file.path}, 
-        //     {new: true} 
-        // )
-        // if(modifiedProduct) {
-        //     res.send(modifiedProduct)
-        // } else {
-        //     next(createError(404, `Product with _id ${productId} Not Found!`))
-        // }
     } catch (error) {
         console.log(error)
         next(createError(500, "An Error ocurred while uploading Image to product"))
