@@ -1,6 +1,7 @@
 import sequelize from "../config/index.js"
 import Product from "./ProductModel.js"
 import Review from "./ReviewModel.js"
+import Category from "./CategoryModel.js"
 
 Product.hasMany(Review, {foreignKey: {allowNull: false}})
 Review.belongsTo(Product, {foreignKey: {allowNull: false}})
@@ -13,4 +14,4 @@ Product.beforeValidate((user) => {
     }
 })
 
-export { sequelize, Product, Review  }
+export { sequelize, Product, Review, Category  }
