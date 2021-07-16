@@ -3,6 +3,7 @@ import listEndpoints from 'express-list-endpoints'
 import cors from 'cors'
 import { badRequestMiddleware, catchAllErrorsMiddleware, notFoundMiddleware } from './errorMiddlewares.js'
 import { sequelize } from './db/models/index.js'
+import productRoutes from './services/products/index.js'
 
 
 
@@ -15,7 +16,7 @@ server.use(cors())
 server.use(express.json())
 
 // ===================== ROUTES  =================================
-
+server.use('/products', productRoutes)
 // ===================== ERROR HANDLERS ==========================
 server.use(notFoundMiddleware)
 server.use(badRequestMiddleware)
