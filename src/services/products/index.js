@@ -19,7 +19,13 @@ router.route('/')
                 let element
 
                 if(key === 'price') {
-                    element = { [key]: {[Op.eq]: parseInt(req.query[key])} }
+                    const compareSymbol = Object.values(req.query)[0].slice(0,1)
+                    compareSymbol === '>'
+                    ?   element = { [key]: {[Op.gte]: parseInt(req.query[key].slice(1))} }
+                    :  compareSymbol === '<' 
+                        ? element = { [key]: {[Op.lte]: parseInt(req.query[key].slice(1))} }
+                        : 
+                        element = { [key]: {[Op.eq]: parseInt(req.query[key])} }
                 } else {
                     element = { [key]: {[Op.substring]: req.query[key]} }
                 }
