@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { Product, Review } from "../../db/models/index.js";
 import sequelize from "sequelize";
+import createError from 'http-errors'
+import { uploadOnCloudinary } from '../../settings/cloudinary.js'
 
 const { Op } = sequelize
 
@@ -88,6 +90,38 @@ router.route('/:productId')
         }
     })
 
+    // ===============  UPLOADS IMAGE TO PRODUCT =======================
+
+router.route('/:productId/uploadImage')
+    .post(uploadOnCloudinary.single('imageUrl'), async (req, res,next) => {
+    try {
+        const data = await Product.update( 
+            {imageUrl: req.file.path}, 
+            {
+                where: { id: req.params.productId},
+                returning: true,
+            }
+        )
+        res.send(data[1][0])
+
+        // const productId = req.params.productId
+        // // const product = await ProductModel.findById(productId)
+
+        // const modifiedProduct = await ProductModel.findByIdAndUpdate(
+        //     productId, 
+        //     {imageUrl: req.file.path}, 
+        //     {new: true} 
+        // )
+        // if(modifiedProduct) {
+        //     res.send(modifiedProduct)
+        // } else {
+        //     next(createError(404, `Product with _id ${productId} Not Found!`))
+        // }
+    } catch (error) {
+        console.log(error)
+        next(createError(500, "An Error ocurred while uploading Image to product"))
+    }
+})
 
 // *****************************************************************************
 //                                 REVIEWS
