@@ -1,4 +1,5 @@
 import sequelize from "../config/index.js"
+import Product from "./ProductModel.js"
 
 
 
@@ -6,4 +7,4 @@ import sequelize from "../config/index.js"
 
 
 
-export { sequelize  }
+export { sequelize, Product  }

@@ -24,7 +24,7 @@ server.use(catchAllErrorsMiddleware)
 
 console.table(listEndpoints(server))
 
-sequelize.sync({})
+sequelize.sync({ force: true })
     .then(() => {
         server.listen(port, () => {
             console.log(" ✅  Server is running on port: " + port)
